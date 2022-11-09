@@ -1,0 +1,94 @@
+---
+title: "Untitled"
+author: "Catherine"
+date: "2022-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown QUestion 2
+
+Application reading data
+
+```{r}
+a <- readRDS("my_day2matrix.rds")
+a
+```
+
+# Row sums and means
+
+row sums
+
+```{r}
+rowSums(a)
+```
+
+row mean
+
+```{r}
+rowMeans(a)
+```
+
+## Dataset 2 with row means AND SUMS
+
+```{r}
+Dataset_A_2 <- cbind(a,
+                     rowsums=rowSums(a), 
+                     rowmeans=rowMeans(a))
+Dataset_A_2
+```
+
+## ToothGrowth Example data
+
+```{r}
+data('ToothGrowth')
+summary(ToothGrowth)
+head(ToothGrowth)
+```
+
+#Descriptive Stats ToothGrowth 
+
+```{r}
+mean(ToothGrowth$len)
+max(ToothGrowth$len)
+min(ToothGrowth$len)
+
+rowMeans(ToothGrowth)
+rowSums(ToothGrowth)
+
+```
+
+##Writting a function to calculate hypotunese
+
+```{r}
+hypotunese_of_triangle <- function(a,b){
+  hypo <- sqrt(a^2+b^2) 
+  return(hypo)}
+hypotunese_of_triangle (6,4)
+```
+
+## Excercise 7 use Apply fucntion
+
+```{r}
+vectlen_10 <- c(30:40)
+vectlen_10
+square <- function(y) {
+  sq=y^2
+  return(sq)}
+lapply(vectlen_10, square)
+sapply(vectlen_10, square)
+LABELS <- c('nike','fube','adi','lv')
+alfa <- c(T, F ,T, F)
+even_num <- c(2, 4, 6, 8, 12)
+my_list <- list(alfa,vectlen_10,alfa, even_num)
+my_list
+sapply(my_list,sum)
+sapply(my_list, rep, each=3)
+new_list <- sapply(my_list, rep, each=3)
+new_list
+
+```
+
