@@ -272,8 +272,8 @@ ggplot( ggplot2::msleep, aes(x= order)  ) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = rel(1.5) ))+
   labs(title="msleep", x="taxonomic order", y ="observations")+
   theme(axis.title = element_text(size = 16))
-theme(legend.key.size = unit(2, "mm"))
-theme(legend.text = element_text (size = 5))
+theme(legend.key.size = unit(0.1, "mm"))
+theme(legend.text = element_text (size = 2))
 guides(fill = guide_legend(ncol =3))
 
 
@@ -362,7 +362,7 @@ ggsave(   )
 - Explore the data set `ggplot2::mpg` and generate the most informative plot that you can!
 
 ```{r}
-
+read_cs
 
 
 
