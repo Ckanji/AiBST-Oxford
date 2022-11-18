@@ -23,13 +23,13 @@ library(dbscan)
 - Import the `iris` data set.
 
 ```{r}
-
+iris
 ```
 
 - Separate the matrix of measurements in a new object named `iris_features`.
 
 ```{r}
-iris_features <- 
+iris_features <- mutate(iris, Species=NULL) %>% as.matrix()
 head(iris_features)
 ```
 
@@ -42,7 +42,7 @@ The `prcomp()` function allows you to standardise the data as part of the princi
 - Apply PCA while centering and scaling the matrix of features.
 
 ```{r}
-pca_iris <- prcomp(   )
+pca_iris <- prcomp(iris_features, scale=TRUE)
 pca_iris
 ```
 
@@ -50,24 +50,25 @@ pca_iris
   Display the loading of each feature on each principal component.
 
 ```{r}
-
+str(pca_iris)
 ```
 
 ```{r}
-
+pca_iris$rotation
 ```
 
 - Use the return value of the PCA to create a `data.frame` called `pca_iris_dataframe` that contains the coordinates projected on principal components.
 
 ```{r}
-pca_iris_dataframe <- 
+pca_iris_dataframe <- as.data.frame(pca_iris$x)
 head(pca_iris_dataframe)
 ```
 
 - Visualise the PCA projection using `ggplot2::geom_point()`.
 
 ```{r}
-ggplot(pca_iris_dataframe,   ) +
+ggplot(pca_iris_dataframe,  aes(PC1,PC2) ) +
+  geom_point()
   
   
 ```
@@ -79,13 +80,13 @@ ggplot(pca_iris_dataframe,   ) +
 - Store the PCA plot as an object named `pca_iris_species`.
 
 ```{r}
-
+pca_iris_dataframe$Species <- iris$Species
 head(pca_iris_dataframe)
 ```
 
 ```{r}
-pca_iris_species <- ggplot(pca_iris_dataframe,    ) +
-  
+pca_iris_species <- ggplot(pca_iris_dataframe, aes(PC1, PC2, color=Species)) +
+  geom_point()
   
 pca_iris_species
 ```
@@ -99,14 +100,23 @@ pca_iris_species
 What do you observe?
 
 ```{r}
+max_absolute <- function(x)(which.max(abs(x)))
+apply(pca_iris$rotation,2, max_absolute)
+```
 
+
+```{r}
+pca_iris$rotation
+max_index <- apply(pca_iris$rotation,2, max_absolute)
+row.names(pca_iris$rotation)[max_index]
 head(pca_iris_dataframe)
 ```
 
 ```{r}
-ggplot(pca_iris_dataframe,    ) +
-  
-  
+pca_iris_dataframe$Petal.Length <- iris$Petal.Length
+pca_iris_Petal.Length <- ggplot(pca_iris_dataframe,aes(x=PC1,PC2)) +
+  geom_point(aes(color=Petal.Length))
+pca_iris_Petal.Length
 
 ```
 
@@ -119,14 +129,16 @@ ggplot(pca_iris_dataframe,    ) +
 - Compute the variance explained by principal components, using information present in the return value of the `prcomp()` function.
 
 ```{r}
-explained_variance_ratio <- 
+pca_iris
+pca_iris$sdev^2
+explained_variance_ratio <- pca_iris$sdev^2/sum(pca_iris$sdev^2)
 explained_variance_ratio
 ```
 
 - Visualise the variance explained by each principal component using `ggplot2::geom_col()`.
 
 ```{r}
-variance_dataframe <- data.frame(
+variance_dataframe <- data.frame(explained_variance =explained_variance_ratio, pca=c("{PC1", "PC2", "PC3", "PC4")
   
   
 )
@@ -134,7 +146,8 @@ head(variance_dataframe)
 ```
 
 ```{r}
-ggplot(variance_dataframe,    ) +
+ggplot(variance_dataframe, aes(pca, explained_variance) ) +
+  geom_col()
   
   
   
